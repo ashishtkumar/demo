@@ -1,5 +1,5 @@
 node{
   stage("SCM Checkout"){
-    git 'https://github.com/ashishtkumar/demo.git'
+    git branch: 'main', url: 'https://github.com/ashishtkumar/demo.git'
   }
 }
