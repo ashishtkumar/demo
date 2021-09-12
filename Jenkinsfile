@@ -12,6 +12,17 @@ node{
       sh "${mvnHome}/bin/mvn sonar:sonar"
     }
   }
+  stage("Quality Gate Status Check"){
+    sleep(60)
+    timeout(time: 5, unit: 'MINUTES'){
+      def qg = waitForQualityGate()
+      if (qg.status != 'OK'){
+        slackSend basUrl: 'https://hooks.slack.com/services', channel: '#test', color: 'danger', message: 'Quality Gate Status Check Failed', teamDomain: "AppDev", tokenCredentialId: "slack"
+      error "Pipleline Aborted due to quality gate failure: ${qg.status}"
+    }
+   }
+    echo "Quality Gate Staus Passed"
+  }
   stage("Deploy to tomcat"){
     sshagent(['tomcat-dev']) {
       sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/opt/tomcat9/webapps/'
