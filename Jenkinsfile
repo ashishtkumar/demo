@@ -1,3 +1,5 @@
+properties([parameters([choice(choices: ['main', 'feature', 'hostfix'], description: 'Select branch to build', name: 'branch')])])
+
 node{
   stage("SCM Checkout"){
     git branch: 'main', url: 'https://github.com/ashishtkumar/demo.git'
