@@ -29,6 +29,13 @@ node{
       sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/opt/tomcat9/webapps/'
     }
   }
+  stage("Email Notification"){
+    mail bcc: '', cc:'', from: '', replyTo: '', subject: 'Jenkins Job', to: 'ashishvkumar7@gmail.com',
+      body: '''Hi, Welcome to jenkins email address.
+      Thanks,
+      Jenkins''',
+        
+  }
   stage("Slack Notification"){
     slackSend baseUrl: 'https://hooks.slack.com/services', channel: '#test', color: 'good', message: 'Welcome to Jenkins!',
       teamDomain: "AppDev", tokenCredentialId: "slack"
