@@ -3,9 +3,9 @@
     become: true
     tasks:
       - name: Install Python Pip
-        yum: name=python-pip state=present
+        apt: name=python-pip state=present
       - name: Install docker-py python module
-        pip: name=docker-py state=present
+        apt: name=docker-py state=present
       - name: Start the container
         docker_container: 
           name: app 
