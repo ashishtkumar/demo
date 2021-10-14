@@ -5,7 +5,7 @@
       - name: Install Python Pip
         apt: name=python-pip state=present
       - name: Install docker-py python module
-        apt: name=docker-py state=present
+        pip: name=docker-py state=present
       - name: Start the container
         docker_container: 
           name: app 
