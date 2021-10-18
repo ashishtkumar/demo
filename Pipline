@@ -1,0 +1,66 @@
+pipeline{
+    agent any
+    tools {
+        maven 'maven3'
+    }
+    environment {
+        DOCKER_TAG = getVersion()
+    }
+    stages{
+        stage("SCM"){
+            steps{
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/ashishtkumar/demo.git'
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+        stage("Uplaod to Nexus"){
+            steps{
+                script{
+                    def mavenPom=readMavenPom file: 'pom.xml'
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'myweb', 
+                            classifier: '', 
+                            file: "target/myweb-${mavenPom.version}.war", 
+                            type: 'war'
+                        ]
+                    ], 
+                    credentialsId: 'nexus3', 
+                    groupId: 'in.javahome', 
+                    nexusUrl: 'localhost:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'demo-release', 
+                    version: "${mavenPom.version}"
+                }
+            }
+        }
+        stage("Docker Bulid"){
+            steps{
+                sh "docker build . -t ashishvkumar/demo:${DOCKER_TAG}"
+            }
+        }
+        stage("Dockerhub Push"){
+            steps{
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubPwd')]) {
+                    sh 'docker login -uashishvkumar -p${dockerhubPwd} '
+                }
+                
+                sh "docker push ashishvkumar/demo:${DOCKER_TAG}"
+            }
+        }
+        stage("Docker Deploy"){
+            steps{
+                ansiblePlaybook credentialsId: 'tomcat-dev', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'dev.inv', playbook: 'docker-deploy.yml'
+            }
+        }
+    }
+}
+def getVersion(){
+    def commitHash=sh label: '', returnStdout: true, script: 'git rev-parse --short HEAD'
+    return commitHash
+}
