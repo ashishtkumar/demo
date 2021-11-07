@@ -20,8 +20,8 @@ pipeline{
                  sshagent(['tomcat-dev']){
                      sh """
                          scp -o StrictHostKeyChecking=no target/myweb.war jenkins@localhost:/opt/tomcat9/webapps/
-                         ssh jenkins@localhost /opt/tomcat9/webapps/bin/shutdown.sh
-                         ssh jenkins@localhost /opt/tomcat9/webapps/bin/startup.sh
+                         ssh jenkins@localhost /opt/tomcat9/bin/shutdown.sh
+                         ssh jenkins@localhost /opt/tomcat9/bin/startup.sh
                      """
                  }
             }
