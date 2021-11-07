@@ -24,7 +24,6 @@ pipeline{
                          ssh jenkins@localhost /opt/tomcat9/webapps/bin/startup.sh
                      """
                  }
-               
             }
         }
     }
