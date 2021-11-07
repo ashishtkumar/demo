@@ -11,7 +11,7 @@ pipeline{
         }
         stage("Maven Built"){
             steps{
-                sh 'mvn clean package'/opt/tomcat9
+                sh 'mvn clean package'
                 sh "mv target/*.war target/myweb.war"
             }
         }
