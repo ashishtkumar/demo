@@ -7,7 +7,7 @@ pipeline{
         DOCKER_TAG = getCommitHash()
         // VERSION=readMavenPom().getVersion()
         MAVEN_POM=readMavenPom file: 'pom.xml'
-        VERSION=${MAVEN_POM}.version
+        VERSION="${MAVEN_POM}".version
     }
     stages{
         stage("SCM"){
