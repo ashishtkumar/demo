@@ -5,7 +5,6 @@ pipeline{
     }
     environment {
         DOCKER_TAG = getCommitHash()
-        // VERSION=readMavenPom().getVersion()
         MAVEN_POM=readMavenPom file: 'pom.xml'
         VERSION="${MAVEN_POM.version}"
     }
@@ -24,12 +23,11 @@ pipeline{
         stage("Uplaod to Nexus"){
             steps{
                 script{
-                    def mavenPom=readMavenPom file: 'pom.xml'
                     nexusArtifactUploader artifacts: [
                         [
                             artifactId: 'myweb', 
                             classifier: '', 
-                            file: "target/myweb-${mavenPom.version}.war", 
+                            file: "target/myweb-${VERSION}.war", 
                             type: 'war'
                         ]
                     ], 
@@ -39,7 +37,7 @@ pipeline{
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
                     repository: 'demo-release', 
-                    version: "${mavenPom.version}"
+                    version: "${VERSION}"
                 }
             }
         }
