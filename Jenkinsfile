@@ -19,7 +19,7 @@ node{
     timeout(time: 5, unit: 'MINUTES'){
       def qg = waitForQualityGate()
       if (qg.status != 'OK'){
-        slackSend basUrl: 'https://hooks.slack.com/services', channel: '#test', color: 'danger', message: 'Quality Gate Status Check Failed',
+        slackSend baseUrl: 'https://hooks.slack.com/services', channel: '#test', color: 'danger', message: 'Quality Gate Status Check Failed',
           teamDomain: "AppDev", tokenCredentialId: "slack"
         error "Pipleline Aborted due to quality gate failure: ${qg.status}"
     }
