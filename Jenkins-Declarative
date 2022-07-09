@@ -6,7 +6,7 @@ pipeline{
         PATH="/opt/apache-maven/bin/mvn:$PATH"
     }
     stages{
-        stage("Welcome"){
+        stage("SCM Checkout"){
             steps{
                 git credentialsId: 'github', url: 'https://github.com/ashish456747/demo'
             }
