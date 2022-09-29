@@ -20,6 +20,13 @@ pipeline{
                 sh 'mvn clean package'
             }
         }
+        stage("SonarQube Analysis"){
+            steps{
+                withSonarQubeEnv('sonar-6'){
+                    sh "mvn sonar:sonar"
+                }
+            }
+        }  
         stage("Uplaod to Nexus"){
             steps{
                 script{
@@ -40,15 +47,7 @@ pipeline{
                     version: "${VERSION}"
                 }
             }
-        }
-        stage("SonarQube Analysis"){
-            steps{
-                def mvnHome= tool name: 'maven3', type: 'maven'
-                withSonarQubeEnv('sonar-6'){
-                    sh "${mvnHome}/bin/mvn sonar:sonar"
-                }
-            }
-        }        
+        }      
         stage("Docker Bulid"){
             steps{
                 sh "docker build . --build-arg ver=${VERSION} -t ashishvkumar/demo:${DOCKER_TAG}"
