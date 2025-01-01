@@ -5,12 +5,12 @@ node{
     git branch: "${params.branch}", url: 'https://github.com/ashishtkumar/demo.git'
   }
   stage("Compile Package"){
-    def mvnHome = tool name: 'maven3', type: 'maven'
+    def mvnHome = tool name: 'maven-3', type: 'maven'
     sh "${mvnHome}/bin/mvn package"
   }
   stage("SonarQube Analysis"){
-    def mvnHome= tool name: 'maven3', type: 'maven'
-    withSonarQubeEnv('sonar-6'){
+    def mvnHome= tool name: 'maven-3', type: 'maven'
+    withSonarQubeEnv('sonar-10'){
       sh "${mvnHome}/bin/mvn sonar:sonar"
     }
   }
@@ -28,7 +28,7 @@ node{
   }
   stage("Deploy to tomcat"){
     sshagent(['tomcat-dev']) {
-      sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/opt/tomcat9/webapps/'
+      sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/var/lib/tomcat9/webapps/'
     }
   }
   stage("Email Notification"){
