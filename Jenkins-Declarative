@@ -3,7 +3,7 @@ currentBuild.displayName="online-shopping-#"+currentBuild.number
 pipeline{
     agent any
     environment{
-        PATH="/opt/apache-maven/bin/mvn:$PATH"
+        PATH="/opt/apache-maven-3.9.9/bin:$PATH"
     }
     stages{
         stage("SCM Checkout"){
