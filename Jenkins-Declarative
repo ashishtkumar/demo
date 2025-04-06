@@ -23,8 +23,6 @@ pipeline{
                      sh """
                          scp -o StrictHostKeyChecking=no target/myweb.war jenkins@localhost:/var/lib/tomcat9/webapps
                          ssh jenkins@localhost sudo systemctl restart tomcat9
-                        //  ssh jenkins@localhost /opt/tomcat9/bin/shutdown.sh
-                        //  ssh jenkins@localhost /opt/tomcat9/bin/startup.sh
                      """
                  }
             }
