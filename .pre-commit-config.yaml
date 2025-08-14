@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-xml
+      - id: detect-private-key
+      - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: java-maven-check
+        name: Java & Maven Validator
+        entry: hooks/java_maven_check.sh
+        language: script
+        files: \.java$|pom\.xml
+
+      - id: dockerfile-lint
+        name: Dockerfile Linter
+        entry: hadolint
+        language: system
+        types: [dockerfile]
+
+      - id: ansible-lint
+        name: Ansible Playbook Linter
+        entry: ansible-lint
+        language: system
+        types: [yaml]

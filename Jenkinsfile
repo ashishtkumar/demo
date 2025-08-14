@@ -4,6 +4,9 @@ node{
   stage("SCM Checkout"){
     git branch: "${params.branch}", url: 'https://github.com/ashishtkumar/demo.git'
   }
+  stage('Run Pre-commit Hooks') {
+    pre-commit run --all-files
+  }
   stage("Compile Package"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
     sh "${mvnHome}/bin/mvn package"
