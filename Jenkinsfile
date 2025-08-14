@@ -7,7 +7,7 @@ node{
   stage('Run Pre-commit Hooks') {
     sh '''
       export PATH=$HOME/.local/bin:$PATH
-      pre-commit run --all-files
+      pre-commit run --all-files --hook-stage manual
     '''
   }
   stage("Compile Package"){
