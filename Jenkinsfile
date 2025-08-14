@@ -5,7 +5,7 @@ node{
     git branch: "${params.branch}", url: 'https://github.com/ashishtkumar/demo.git'
   }
   stage('Run Pre-commit Hooks') {
-    pre-commit run --all-files
+    sh "pre-commit run --all-files"
   }
   stage("Compile Package"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
