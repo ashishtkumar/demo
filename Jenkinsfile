@@ -6,6 +6,7 @@ node{
   }
   stage('Run Pre-commit Hooks') {
     sh '''
+      chmod +x hooks/java_maven_check.sh
       export PATH=$HOME/.local/bin:$PATH
       pre-commit run --all-files --hook-stage manual
     '''

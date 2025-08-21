@@ -3,7 +3,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        args: [--show-diff-on-failure]
       - id: end-of-file-fixer
+        args: [--show-diff-on-failure]
       - id: check-yaml
       - id: check-xml
       - id: detect-private-key
