@@ -20,6 +20,8 @@ fi
 
 # Validate Maven pom.xml
 if [[ -f "pom.xml" ]]; then
+    export PATH=/opt/apache-maven-3.9.9/bin:$PATH
+    export PATH=$HOME/.local/bin:$PATH
     mvn validate > /dev/null
     if [[ $? -ne 0 ]]; then
         echo -e "${RED}❌ Maven validation failed${NC}"
