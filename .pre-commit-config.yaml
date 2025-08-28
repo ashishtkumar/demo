@@ -1,8 +1,8 @@
-default_stages: [pre-commit, pre-push]
+default_stages: [commit, push]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: v4.0.0
     hooks:
       - id: check-yaml
       - id: check-xml
