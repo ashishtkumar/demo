@@ -10,6 +10,12 @@ node{
       pre-commit run --all-files --hook-stage manual
     '''
   }
+  stage('Run dependency-check') {
+    def mvnHome = tool name: 'maven-3', type: 'maven'
+    withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
+      sh "${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.0:check"
+    }
+  }
   stage("Compile Package"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
     sh "${mvnHome}/bin/mvn package"
