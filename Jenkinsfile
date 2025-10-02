@@ -22,19 +22,11 @@ node{
       sh """
         ${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.3:check \
           -DnvdApiKey=$NVD_API_KEY \
-          -DossIndexAnalyzerEnabled=true \
+          -Dnvd.forceupdate=true \
           -DossIndexUsername=$OSSINDEX_USERNAME \
           -DossIndexPassword=$OSSINDEX_PASSWORD \
           -Dformat=HTML \
-          -DfailBuildOnCVSS=7 \
-          -Danalyzer.jar.enabled=true \
-          -Danalyzer.archive.enabled=true \
-          -Danalyzer.ossindex.enabled=true \
-          -Danalyzer.cpe.enabled=true \
-          -Danalyzer.nvd.enabled=true \
-          -Danalyzer.knownexploited.enabled=true \
-          -Danalyzer.suppression.enabled=true \
-          -Danalyzer.dependencybundling.enabled=true
+          -DfailBuildOnCVSS=7
       """
     }
   }
