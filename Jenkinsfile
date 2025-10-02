@@ -11,11 +11,34 @@ node{
     '''
   }
   stage('Run dependency-check') {
-    def mvnHome = tool name: 'maven-3', type: 'maven'
-    withCredentials([string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')]) {
-      sh "${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.0:check"
+  def mvnHome = tool name: 'maven-3', type: 'maven'
+  withCredentials([
+    string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY'),
+    usernamePassword(credentialsId: 'ossindex-creds', usernameVariable: 'OSSINDEX_USERNAME', passwordVariable: 'OSSINDEX_PASSWORD')
+  ]) {
+    withEnv([
+      'MAVEN_OPTS=--enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector'
+    ]) {
+      sh """
+        ${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.0:check \
+          -DnvdApiKey=$NVD_API_KEY \
+          -DossIndexAnalyzerEnabled=true \
+          -DossIndexUsername=$OSSINDEX_USERNAME \
+          -DossIndexPassword=$OSSINDEX_PASSWORD \
+          -Dformat=HTML \
+          -DfailBuildOnCVSS=7 \
+          -Danalyzer.jar.enabled=true \
+          -Danalyzer.archive.enabled=true \
+          -Danalyzer.ossindex.enabled=true \
+          -Danalyzer.cpe.enabled=true \
+          -Danalyzer.nvd.enabled=true \
+          -Danalyzer.knownexploited.enabled=true \
+          -Danalyzer.suppression.enabled=true \
+          -Danalyzer.dependencybundling.enabled=true
+      """
     }
   }
+}
   stage("Compile Package"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
     sh "${mvnHome}/bin/mvn package"
