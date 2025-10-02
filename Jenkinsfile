@@ -20,7 +20,7 @@ node{
       'MAVEN_OPTS=--enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.vector'
     ]) {
       sh """
-        ${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.0:check \
+        ${mvnHome}/bin/mvn org.owasp:dependency-check-maven:12.1.3:check \
           -DnvdApiKey=$NVD_API_KEY \
           -DossIndexAnalyzerEnabled=true \
           -DossIndexUsername=$OSSINDEX_USERNAME \
