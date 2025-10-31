@@ -31,6 +31,21 @@ node{
         }
       }
   }
+  stage('Publish Dependency Check Report') {
+    publishHTML([
+      reportDir: 'target',
+      reportFiles: 'dependency-check-report.html',
+      reportName: 'Dependency Check Report',
+      keepAll: true,
+      alwaysLinkToLastBuild: true,
+      allowMissing: false
+    ])
+  }
+  post {
+    always {
+      archiveArtifacts artifacts: 'target/dependency-check-report.html', fingerprint: true
+    }
+  }
   stage("Compile Package"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
     sh "${mvnHome}/bin/mvn package"
