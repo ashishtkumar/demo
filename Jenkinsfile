@@ -31,6 +31,15 @@ node{
         }
       }
   }
+  stage('Snyk Test') {
+    withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
+      sh '''
+        export PATH=$HOME/.local/bin:$PATH
+        snyk auth $SNYK_TOKEN
+        snyk test --all-projects --severity-threshold=high || true
+      '''
+    }
+  }
   stage('Publish Dependency Check Report') {
     publishHTML([
       reportDir: 'target',
