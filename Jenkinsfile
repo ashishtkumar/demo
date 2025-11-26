@@ -36,7 +36,7 @@ node{
       sh '''
         export PATH=$HOME/.local/bin:$PATH
         snyk auth $SNYK_TOKEN
-        snyk test --all-projects --severity-threshold=high || true
+        snyk test --all-projects --severity-threshold=high -d || true
       '''
     }
   }
