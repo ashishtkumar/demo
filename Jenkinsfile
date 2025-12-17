@@ -38,7 +38,7 @@ node{
         snyk auth $SNYK_TOKEN
         export PATH=/opt/apache-maven-3.9.9/bin:$PATH
         export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-        snyk test --all-projects --severity-threshold=high -d || true
+        snyk test --all-projects --severity-threshold=high || true
       '''
     }
   }
