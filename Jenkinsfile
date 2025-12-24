@@ -31,6 +31,16 @@ node{
         }
       }
   }
+  stage('Publish Dependency Check Report') {
+    publishHTML([
+      reportDir: 'target',
+      reportFiles: 'dependency-check-report.html',
+      reportName: 'Dependency Check Report',
+      keepAll: true,
+      alwaysLinkToLastBuild: true,
+      allowMissing: false
+    ])
+  }
   stage('Snyk Test') {
     withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
       sh '''
@@ -38,15 +48,15 @@ node{
         snyk auth $SNYK_TOKEN
         export PATH=/opt/apache-maven-3.9.9/bin:$PATH
         export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-        snyk test --all-projects --severity-threshold=high || true
+        snyk test --all-projects --severity-threshold=high --json | snyk-to-html -o snyk-report.html || true
       '''
     }
   }
-  stage('Publish Dependency Check Report') {
+  stage('Publish Snyk Report') {
     publishHTML([
       reportDir: 'target',
-      reportFiles: 'dependency-check-report.html',
-      reportName: 'Dependency Check Report',
+      reportFiles: 'snyk-report.html',
+      reportName: 'Snyk Vulnerability Report',
       keepAll: true,
       alwaysLinkToLastBuild: true,
       allowMissing: false
