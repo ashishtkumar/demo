@@ -64,7 +64,7 @@ node{
       allowMissing: false
     ])
   }
-  stage("Compile Package"){
+  stage("Build & Compile"){
     def mvnHome = tool name: 'maven-3', type: 'maven'
     // sh "${mvnHome}/bin/mvn package"
     sh "${mvnHome}/bin/mvn clean compile"
@@ -85,7 +85,15 @@ node{
         error "Pipleline Aborted due to quality gate failure: ${qg.status}"
     }
    }
-    echo "Quality Gate Staus Passed"
+    echo "Quality Gate Status Passed"
+  }
+  stage('Unit Testing'){
+    try{
+      echo 'Executing unit tests...'
+      sh 'mvn test'
+    }finally{
+      junit '**/target/surefire-reports/*.xml'
+    }
   }
   stage("Deploy to tomcat"){
     sshagent(['tomcat-dev']) {
