@@ -90,7 +90,8 @@ node{
   stage('Unit Testing'){
     try{
       echo 'Executing unit tests...'
-      sh 'mvn test'
+      def mvnHome= tool name: 'maven-3', type: 'maven'
+      sh "${mvnHome}/bin/mvn test"
     }finally{
       junit '**/target/surefire-reports/*.xml'
     }
