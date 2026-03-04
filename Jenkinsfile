@@ -96,6 +96,16 @@ node{
       junit '**/target/surefire-reports/*.xml'
     }
   }
+  stage('Artifact Packaging & Archiving'){
+    try{
+      sh 'mvn package'
+      archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+    }catch (Exception e){
+      echo "Build failed: ${e.message}"
+      currentBuild.result = 'FAILURE'
+      throw e
+    }
+  }
   stage("Deploy to tomcat"){
     sshagent(['tomcat-dev']) {
       sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/var/lib/tomcat9/webapps/'
