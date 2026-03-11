@@ -98,7 +98,8 @@ node{
   }
   stage('Artifact Packaging & Archiving'){
     try{
-      sh 'mvn package'
+      def mvnHome = tool name: 'maven-3', type: 'maven'
+      sh "${mvnHome}/bin/mvn package"
       archiveArtifacts artifacts: 'target/*.war', fingerprint: true
     }catch (Exception e){
       echo "Build failed: ${e.message}"
