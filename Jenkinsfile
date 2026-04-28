@@ -1,6 +1,13 @@
 properties([parameters([choice(choices: ['main', 'feature', 'hostfix'], description: 'Select branch to build', name: 'branch')])])
 
 node{
+  // Define variables once, outside stages but inside node
+  def REGISTRY       = 'docker.io'
+  def IMAGE_NAME     = 'ashishvkumar/myapp'
+  def DOCKERHUB_USER = 'ashishvkumar'
+  def DOCKER_TAG     = getCommitHash()
+  def MAVEN_POM      = readMavenPom(file: 'pom.xml')
+  def VERSION        = MAVEN_POM.version
   stage("SCM Checkout"){
     git branch: "${params.branch}", url: 'https://github.com/ashishtkumar/demo.git'
   }
@@ -111,6 +118,21 @@ node{
       sh 'scp -o StrictHostKeyChecking=no target/*.war jenkins@localhost:/var/lib/tomcat9/webapps/'
     }
   }
+  stage('Docker Login'){
+    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubPwd')]){
+      sh "docker login -u "${DOCKERHUB_USER}" -p ${dockerhubPwd}"
+    }
+  }
+  stage('Build Docker Image (Multi-Platform)') {
+    echo 'Building multi-platform Docker image...'
+    sh """
+      # Create and use a builder instance (ignore error if already exists)
+      docker buildx create --use --name mybuilder || true
+      docker buildx build --platform linux/amd64,linux/arm64 \
+        --build-arg ver=${VERSION} \
+        -t ${REGISTRY}/${IMAGE_NAME}:${DOCKER_TAG} --push .
+    """
+  }
   stage("Email Notification"){
     mail bcc: '', cc:'', from: '', replyTo: '', subject: 'Jenkins Job', to: 'ashishvkumar7@gmail.com',
       body: '''Hi, Welcome to jenkins email address.
@@ -121,4 +143,8 @@ node{
     slackSend baseUrl: 'https://hooks.slack.com/services', channel: '#test', color: 'good', message: 'Welcome to Jenkins!',
       teamDomain: "AppDev", tokenCredentialId: "slack"
   }
+}
+def getCommitHash(){
+    def commitHash=sh label: '', returnStdout: true, script: 'git rev-parse --short HEAD'
+    return commitHash
 }
