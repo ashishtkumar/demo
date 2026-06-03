@@ -1,0 +1,14 @@
+<suppressions>
+    <suppress>
+        <cve>CVE-2026-34479</cve>
+        <notes>False positive: fixed in log4j-api 2.22.1</notes>
+    </suppress>
+    <suppress>
+        <cve>CVE-2026-34477</cve>
+        <notes>False positive: fixed in log4j-api 2.22.1</notes>
+    </suppress>
+    <suppress>
+        <cve>CVE-2025-31672</cve>
+        <notes>False positive: fixed in POI 5.3.0</notes>
+    </suppress>
+</suppressions>

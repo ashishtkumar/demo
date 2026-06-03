@@ -82,6 +82,7 @@
 					<ossIndexPassword>${env.OSSINDEX_PASSWORD}</ossIndexPassword>
 					<format>HTML</format>
 					<failBuildOnCVSS>7</failBuildOnCVSS>
+					<suppressionFile>dependency-check-suppressions.xml</suppressionFile>
 				</configuration>
 				<executions>
 					<execution>
