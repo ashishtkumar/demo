@@ -1,2 +1,17 @@
-<suppressions>
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd"
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd">
+	<suppress>
+		<notes>False positive: fixed in log4j-api 2.22.1</notes>
+		<cve>CVE-2026-34479</cve>
+	</suppress>
+	<suppress>
+		<notes>False positive: fixed in log4j-api 2.22.1</notes>
+		<cve>CVE-2026-34477</cve>
+	</suppress>
+	<suppress>
+		<notes>False positive: fixed in POI 5.3.0</notes>
+		<cve>CVE-2025-31672</cve>
+	</suppress>
 </suppressions>

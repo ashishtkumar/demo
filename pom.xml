@@ -80,6 +80,7 @@
 					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
 					<ossIndexUsername>${env.OSSINDEX_USERNAME}</ossIndexUsername>
 					<ossIndexPassword>${env.OSSINDEX_PASSWORD}</ossIndexPassword>
+					<ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
 					<format>HTML</format>
 					<failBuildOnCVSS>7</failBuildOnCVSS>
 					<suppressionFile>dependency-check-suppressions.xml</suppressionFile>
