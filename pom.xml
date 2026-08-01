@@ -73,6 +73,11 @@
 				<version>2.19</version>
 			</plugin>
 			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.0.0.4389</version>
+			</plugin>
+			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
 				<version>12.1.3</version>
